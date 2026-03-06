@@ -95,7 +95,7 @@ export default function App() {
       <main style={styles.main}>
         {renderContent()}
       </main>
-      <Footer />
+      <Footer onNavigate={setActiveSection} />
       <AIChatbot />
     </div>
   );
@@ -1262,7 +1262,7 @@ function RegisterSection({ onRegister }) {
 }
 
 // Footer Component
-function Footer() {
+function Footer({ onNavigate }) {
   return (
     <footer style={styles.footer}>
       <div style={styles.footerContent}>
@@ -1273,11 +1273,11 @@ function Footer() {
         <div style={styles.footerSection}>
           <h4 style={styles.footerSubtitle}>Quick Links</h4>
           <ul style={styles.footerLinks}>
-            <li>Jobs</li>
-            <li>Internships</li>
-            <li>Training</li>
-            <li>Scholarships</li>
-            <li>Marketplace</li>
+            <li className="footer-link" style={styles.footerLink} onClick={() => onNavigate && onNavigate('jobs')}>Jobs</li>
+            <li className="footer-link" style={styles.footerLink} onClick={() => onNavigate && onNavigate('internships')}>Internships</li>
+            <li className="footer-link" style={styles.footerLink} onClick={() => onNavigate && onNavigate('training')}>Training</li>
+            <li className="footer-link" style={styles.footerLink} onClick={() => onNavigate && onNavigate('scholarships')}>Scholarships</li>
+            <li className="footer-link" style={styles.footerLink} onClick={() => onNavigate && onNavigate('marketplace')}>Marketplace</li>
           </ul>
         </div>
         <div style={styles.footerSection}>
@@ -1987,6 +1987,12 @@ const styles = {
     margin: 0,
     lineHeight: '2',
   },
+  footerLink: {
+    cursor: 'pointer',
+    color: 'white',
+    opacity: 0.9,
+    transition: 'opacity 0.2s',
+  },
   socialLinks: {
     display: 'flex',
     flexDirection: 'column',
@@ -2006,6 +2012,11 @@ styleSheet.textContent = `
   @media (max-width: 1024px) {
     .hero-title { font-size: 40px !important; }
     .section-title { font-size: 30px !important; }
+  }
+  
+  .footer-link:hover {
+    opacity: 1 !important;
+    text-decoration: underline !important;
   }
   
   @media (max-width: 768px) {
