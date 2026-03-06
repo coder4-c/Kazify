@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -17,9 +18,25 @@ app.use(cors());
 // MongoDB Connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/kazify';
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(MONGODB_URI, {
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+})
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.log('MongoDB connection error:', err.message));
+
+// Connection event listeners
+mongoose.connection.on('error', (err) => {
+  console.log('MongoDB connection error:', err.message);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connected successfully');
+});
 
 // ==================== MODELS ====================
 
@@ -624,10 +641,22 @@ app.get('/api/health', (req, res) => {
 app.listen(port, async () => {
   console.log(`KYOH Backend listening on port ${port}`);
   
-  // Seed initial data
-  await seedData();
+  // Wait for MongoDB connection before seeding data
+  const maxRetries = 5;
+  let retries = 0;
+  while (mongoose.connection.readyState !== 1 && retries < maxRetries) {
+    console.log('Waiting for MongoDB connection...');
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    retries++;
+  }
   
-  console.log('Server ready!');
+  if (mongoose.connection.readyState === 1) {
+    // Seed initial data
+    await seedData();
+    console.log('Server ready!');
+  } else {
+    console.log('Warning: MongoDB not connected, skipping seed data');
+  }
 });
 
 module.exports = app;
