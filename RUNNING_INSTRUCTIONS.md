@@ -1,4 +1,4 @@
-# How to Run Kenya Youth Opportunity Hub (MERN Stack)
+# How to Run Kazify (MERN Stack)
 
 ## Prerequisites
 

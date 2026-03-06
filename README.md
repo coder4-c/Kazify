@@ -1,6 +1,6 @@
-# Kenya Youth Opportunity Hub (KYOH)
+# Kazify
 
-A MERN stack web application connecting Kenyan youth with employment, training, and entrepreneurship opportunities.
+A MERN stack web application connecting youth with employment, training, and entrepreneurship opportunities.
 
 ## Features
 

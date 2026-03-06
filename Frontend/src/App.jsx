@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // Import real data from credible sources
 import { jobsData, internshipsData, scholarshipsData, trainingData, marketplaceData } from './data/opportunities';
+import AIChatbot from './components/AIChatbot';
 
 // Main App Component
 export default function App() {
@@ -34,7 +35,7 @@ export default function App() {
     
     switch (activeSection) {
       case 'home':
-        return <HomeSection />;
+        return <HomeSection onNavigate={setActiveSection} />;
       case 'jobs':
         return <JobsSection />;
       case 'internships':
@@ -85,6 +86,7 @@ export default function App() {
         {renderContent()}
       </main>
       <Footer />
+      <AIChatbot />
     </div>
   );
 }
@@ -94,7 +96,7 @@ function LandingPage({ onLogin, onRegister }) {
   return (
     <div style={styles.landingPage}>
       <div style={styles.landingHero}>
-        <h1 style={styles.landingTitle}>Welcome to Kenya Youth Opportunity Hub</h1>
+        <h1 style={styles.landingTitle}>Welcome to Kazify</h1>
         <p style={styles.landingSubtitle}>Your gateway to employment, training, and entrepreneurship opportunities</p>
         <div style={styles.landingButtons}>
           <button style={styles.landingBtnPrimary} onClick={onRegister}>Get Started</button>
@@ -123,9 +125,8 @@ function Navigation({ activeSection, setActiveSection, user, isAuthenticated, on
     <nav style={styles.nav}>
       <div style={styles.navContainer}>
         <div style={styles.logo} onClick={() => setActiveSection('home')}>
-          <span style={styles.logoIcon}>🇰🇪</span>
-          <span style={styles.logoText}>KYOH</span>
-          <span style={styles.logoFull}>Kenya Youth Opportunity Hub</span>
+          <span style={styles.logoIcon}>🚀</span>
+          <span style={styles.logoText}>Kazify</span>
         </div>
         
         <button 
@@ -182,7 +183,10 @@ function Navigation({ activeSection, setActiveSection, user, isAuthenticated, on
 }
 
 // Home Section
-function HomeSection() {
+function HomeSection({ onNavigate }) {
+  const navigateTo = (section) => {
+    if (onNavigate) onNavigate(section);
+  };
   const [stats, setStats] = useState({
     users: 0,
     jobs: 0,
@@ -209,14 +213,14 @@ function HomeSection() {
       <section style={styles.hero}>
         <div style={styles.heroContent}>
           <h1 style={styles.heroTitle}>
-            Welcome to Kenya Youth Opportunity Hub
+            Welcome to Kazify
           </h1>
           <p style={styles.heroSubtitle}>
             Your gateway to employment, training, and entrepreneurship opportunities in Kenya
           </p>
           <div style={styles.heroButtons}>
-            <button style={styles.heroBtnPrimary}>Find Jobs</button>
-            <button style={styles.heroBtnSecondary}>Post a Job</button>
+          <button style={styles.heroBtnPrimary} onClick={() => navigateTo('jobs')}>Find Jobs</button>
+          <button style={styles.heroBtnSecondary} onClick={() => navigateTo('jobs')}>Post a Job</button>
           </div>
           <div style={styles.heroStats}>
             <div style={styles.statItem}>
@@ -247,31 +251,37 @@ function HomeSection() {
             icon="💼"
             title="Jobs & Employment"
             description="Find full-time, part-time, and casual jobs from top employers across Kenya"
+            onClick={() => navigateTo('jobs')}
           />
           <ServiceCard
             icon="📚"
             title="Internships"
             description="Gain valuable work experience through internships with leading companies"
+            onClick={() => navigateTo('internships')}
           />
           <ServiceCard
             icon="🎓"
             title="Training Programs"
             description="Access digital skills, entrepreneurship, and technical training"
+            onClick={() => navigateTo('training')}
           />
           <ServiceCard
             icon="🏆"
             title="Scholarships"
             description="Discover scholarships, grants, and fellowship opportunities"
+            onClick={() => navigateTo('scholarships')}
           />
           <ServiceCard
             icon="🛒"
             title="Marketplace"
             description="Sell your products and services to a nationwide audience"
+            onClick={() => navigateTo('marketplace')}
           />
           <ServiceCard
             icon="👤"
             title="Youth Profiles"
             description="Create your profile and let employers find you"
+            onClick={() => navigateTo('profiles')}
           />
         </div>
       </section>
@@ -284,21 +294,25 @@ function HomeSection() {
             number="1"
             title="Create Your Profile"
             description="Sign up and build your professional profile with skills and experience"
+            onClick={() => navigateTo('profiles')}
           />
           <StepCard
             number="2"
             title="Search Opportunities"
             description="Browse through thousands of jobs, internships, and training programs"
+            onClick={() => navigateTo('jobs')}
           />
           <StepCard
             number="3"
             title="Apply & Connect"
             description="Submit applications and connect with employers directly"
+            onClick={() => navigateTo('jobs')}
           />
           <StepCard
             number="4"
             title="Start Your Career"
             description="Get hired and start your journey to success"
+            onClick={() => navigateTo('jobs')}
           />
         </div>
       </section>
@@ -306,7 +320,7 @@ function HomeSection() {
       {/* CTA Section */}
       <section style={styles.cta}>
         <h2 style={styles.ctaTitle}>Ready to Transform Your Future?</h2>
-        <p style={styles.ctaText}>Join thousands of Kenyan youth already using KYOH to advance their careers</p>
+        <p style={styles.ctaText}>Join thousands of Kenyan youth already using Kazify to advance their careers</p>
         <button style={styles.ctaButton}>Get Started Today</button>
       </section>
     </div>
@@ -314,9 +328,9 @@ function HomeSection() {
 }
 
 // Service Card Component
-function ServiceCard({ icon, title, description }) {
+function ServiceCard({ icon, title, description, onClick }) {
   return (
-    <div style={styles.serviceCard}>
+    <div style={styles.serviceCard} onClick={onClick}>
       <span style={styles.serviceIcon}>{icon}</span>
       <h3 style={styles.serviceTitle}>{title}</h3>
       <p style={styles.serviceDesc}>{description}</p>
@@ -325,9 +339,9 @@ function ServiceCard({ icon, title, description }) {
 }
 
 // Step Card Component
-function StepCard({ number, title, description }) {
+function StepCard({ number, title, description, onClick }) {
   return (
-    <div style={styles.stepCard}>
+    <div style={styles.stepCard} onClick={onClick}>
       <div style={styles.stepNumber}>{number}</div>
       <h3 style={styles.stepTitle}>{title}</h3>
       <p style={styles.stepDesc}>{description}</p>
@@ -947,7 +961,7 @@ function LoginSection({ onLogin }) {
     <div style={styles.authSection}>
       <div style={styles.authCard}>
         <h2 style={styles.authTitle}>Welcome Back</h2>
-        <p style={styles.authSubtitle}>Login to your KYOH account</p>
+        <p style={styles.authSubtitle}>Login to your Kazify account</p>
 
         {error && <div style={styles.errorAlert}>{error}</div>}
 
@@ -1089,7 +1103,7 @@ function RegisterSection({ onRegister }) {
       const data = await response.json();
       
       if (response.ok) {
-        alert('Registration successful! Welcome to KYOH.');
+        alert('Registration successful! Welcome to Kazify.');
         onRegister(data.user, data.token);
       } else {
         setError(data.message || 'Registration failed');
@@ -1104,7 +1118,7 @@ function RegisterSection({ onRegister }) {
   return (
     <div style={styles.authSection}>
       <div style={styles.authCard}>
-        <h2 style={styles.authTitle}>Join KYOH</h2>
+        <h2 style={styles.authTitle}>Join Kazify</h2>
         <p style={styles.authSubtitle}>Create your account and start exploring opportunities</p>
 
         {error && <div style={styles.errorAlert}>{error}</div>}
@@ -1234,7 +1248,7 @@ function Footer() {
     <footer style={styles.footer}>
       <div style={styles.footerContent}>
         <div style={styles.footerSection}>
-          <h3 style={styles.footerTitle}>Kenya Youth Opportunity Hub</h3>
+          <h3 style={styles.footerTitle}>Kazify</h3>
           <p style={styles.footerText}>Connecting Kenyan youth to employment, training, and entrepreneurship opportunities.</p>
         </div>
         <div style={styles.footerSection}>
@@ -1266,7 +1280,7 @@ function Footer() {
         </div>
       </div>
       <div style={styles.footerBottom}>
-        <p>© 2026 Kenya Youth Opportunity Hub. All rights reserved.</p>
+        <p>© 2026 Kazify. All rights reserved.</p>
       </div>
     </footer>
   );
@@ -1294,6 +1308,7 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexWrap: 'wrap',
+    gap: '15px',
   },
   logo: {
     display: 'flex',
@@ -1302,17 +1317,13 @@ const styles = {
     cursor: 'pointer',
   },
   logoIcon: {
-    fontSize: '28px',
+    fontSize: '32px',
   },
   logoText: {
-    fontSize: '24px',
+    fontSize: '28px',
     fontWeight: 'bold',
-    color: '#2e7d32',
-  },
-  logoFull: {
-    fontSize: '14px',
-    color: '#666',
-    fontWeight: 'normal',
+    color: '#2563eb',
+    letterSpacing: '-0.5px',
   },
   mobileMenuBtn: {
     display: 'none',
@@ -1417,12 +1428,12 @@ const styles = {
     maxWidth: '700px',
   },
   landingTitle: {
-    fontSize: '48px',
+    fontSize: 'clamp(28px, 6vw, 48px)',
     fontWeight: 'bold',
     marginBottom: '20px',
   },
   landingSubtitle: {
-    fontSize: '22px',
+    fontSize: 'clamp(16px, 3vw, 22px)',
     marginBottom: '40px',
     opacity: 0.95,
   },
@@ -1470,12 +1481,12 @@ const styles = {
     margin: '0 auto',
   },
   heroTitle: {
-    fontSize: '48px',
+    fontSize: 'clamp(28px, 5vw, 48px)',
     fontWeight: 'bold',
     marginBottom: '20px',
   },
   heroSubtitle: {
-    fontSize: '20px',
+    fontSize: 'clamp(16px, 3vw, 20px)',
     marginBottom: '30px',
     opacity: 0.9,
   },
@@ -1538,8 +1549,8 @@ const styles = {
   },
   servicesGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-    gap: '30px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '20px',
   },
   serviceCard: {
     background: '#fff',
@@ -1548,6 +1559,7 @@ const styles = {
     boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
     textAlign: 'center',
     transition: 'transform 0.3s',
+    cursor: 'pointer',
   },
   serviceIcon: {
     fontSize: '50px',
@@ -1571,12 +1583,13 @@ const styles = {
     maxWidth: '1200px',
     margin: '0 auto',
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '30px',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '25px',
   },
   stepCard: {
     textAlign: 'center',
     padding: '30px',
+    cursor: 'pointer',
   },
   stepNumber: {
     width: '60px',
@@ -1716,8 +1729,8 @@ const styles = {
   },
   marketplaceGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-    gap: '25px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+    gap: '20px',
   },
   productCard: {
     background: '#fff',
@@ -1848,11 +1861,12 @@ const styles = {
   },
   authCard: {
     background: '#fff',
-    padding: '40px',
+    padding: 'clamp(20px, 5vw, 40px)',
     borderRadius: '15px',
     boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
     maxWidth: '500px',
     width: '100%',
+    margin: '20px',
   },
   authTitle: {
     fontSize: '28px',
@@ -1877,7 +1891,7 @@ const styles = {
   },
   formRow: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
     gap: '15px',
   },
   formLabel: {
@@ -1970,13 +1984,50 @@ const styles = {
 // Add responsive styles
 const styleSheet = document.createElement("style");
 styleSheet.textContent = `
+  @media (max-width: 1024px) {
+    .hero-title { font-size: 40px !important; }
+    .section-title { font-size: 30px !important; }
+  }
+  
   @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-    }
-    .mobile-menu-btn {
-      display: block;
-    }
+    .nav-container { flex-direction: column; gap: 15px; }
+    .nav-links { display: none; }
+    .mobile-menu-btn { display: block !important; }
+    .hero-title { font-size: 32px !important; }
+    .hero-subtitle { font-size: 18px !important; }
+    .hero-stats { flex-direction: column; gap: 20px !important; }
+    .services-grid { grid-template-columns: 1fr !important; }
+    .steps { grid-template-columns: 1fr !important; }
+    .marketplace-grid { grid-template-columns: 1fr !important; }
+    .jobs-list { gap: 15px; }
+    .job-card { padding: 15px !important; }
+    .filter-bar { flex-direction: column; }
+    .filter-select, .search-input { width: 100% !important; min-width: unset !important; }
+    .auth-card { padding: 20px !important; margin: 10px !important; }
+    .form-row { grid-template-columns: 1fr !important; }
+    .footer-content { grid-template-columns: 1fr !important; text-align: center; }
+    .landing-title { font-size: 32px !important; }
+    .landing-buttons { flex-direction: column !important; }
+    .greeting { font-size: 14px !important; margin-right: 10px !important; }
+    .user-menu { flex-direction: column; gap: 10px; }
+    .logout-btn { width: 100%; }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-title { font-size: 26px !important; }
+    .hero-stats { gap: 15px !important; }
+    .stat-number { font-size: 24px !important; }
+    .section-title { font-size: 24px !important; }
+    .page-title { font-size: 24px !important; }
+    .nav-logo-full { display: none !important; }
+    .logo { gap: 5px !important; }
+    .logo-icon { font-size: 20px !important; }
+    .logo-text { font-size: 18px !important; }
+    .service-card { padding: 20px !important; }
+    .service-icon { font-size: 40px !important; }
+    .product-card { padding: 15px !important; }
+    .auth-buttons { gap: 5px !important; }
+    .login-btn, .register-btn { padding: 6px 12px !important; font-size: 14px !important; }
   }
 `;
 document.head.appendChild(styleSheet);

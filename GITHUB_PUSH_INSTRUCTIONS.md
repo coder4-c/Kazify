@@ -61,7 +61,7 @@ git add .
 
 ### Step 6: Create Initial Commit
 ```bash
-git commit -m "Initial commit: Kenya Youth Opportunity Hub - MERN Stack Application"
+git commit -m "Initial commit: Kazify - MERN Stack Application"
 ```
 
 ### Step 7: Push to GitHub
