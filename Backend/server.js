@@ -8,14 +8,14 @@ const cron = require('node-cron');
 
 const app = express();
 const port = process.env.PORT || 4000;
-const JWT_SECRET = process.env.JWT_SECRET || 'kyoh-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET || 'kazify-secret-key-2026';
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/kyoh';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/kazify';
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))

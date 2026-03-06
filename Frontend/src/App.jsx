@@ -29,6 +29,16 @@ export default function App() {
   };
 
   const renderContent = () => {
+    // Show login/register sections for unauthenticated users
+    if (!isAuthenticated && (activeSection === 'login' || activeSection === 'register')) {
+      if (activeSection === 'login') {
+        return <LoginSection onLogin={handleLogin} />;
+      }
+      if (activeSection === 'register') {
+        return <RegisterSection onRegister={handleLogin} />;
+      }
+    }
+    
     if (!isAuthenticated) {
       return <LandingPage onLogin={() => setActiveSection('login')} onRegister={() => setActiveSection('register')} />;
     }
@@ -1097,7 +1107,16 @@ function RegisterSection({ onRegister }) {
       const response = await fetch('http://localhost:4000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password,
+          userType: formData.userType,
+          location: formData.location,
+          skills: formData.skills
+        })
       });
       
       const data = await response.json();
