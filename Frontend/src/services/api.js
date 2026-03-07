@@ -1,5 +1,6 @@
-// API Base URL - configured via VITE_API_URL environment variable
+// API Base URL - Production backend
 const API_BASE_URL = 'https://kazify-backend.onrender.com/api';
+// For local development, use: http://localhost:4000/api
 
 // Helper function for API calls
 const fetchAPI = async (endpoint, options = {}) => {
